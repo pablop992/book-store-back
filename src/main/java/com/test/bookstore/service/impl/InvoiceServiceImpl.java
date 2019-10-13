@@ -3,6 +3,8 @@ package com.test.bookstore.service.impl;
 import com.test.bookstore.dto.misc.InvoiceItem;
 import com.test.bookstore.dto.request.InvoiceRequest;
 import com.test.bookstore.entity.InventoryItem;
+import com.test.bookstore.entity.Invoice;
+import com.test.bookstore.mapper.InvoiceItemMapper;
 import com.test.bookstore.repository.InventoryRepository;
 import com.test.bookstore.repository.InvoiceRepository;
 import com.test.bookstore.service.InvoiceService;
@@ -19,16 +21,26 @@ public class InvoiceServiceImpl implements InvoiceService {
 
   private final InvoiceRepository invoiceRepository;
   private final InventoryRepository inventoryRepository;
+  private final InvoiceItemMapper invoiceItemMapper;
 
   public InvoiceServiceImpl(InvoiceRepository invoiceRepository,
-      InventoryRepository inventoryRepository) {
+      InventoryRepository inventoryRepository,
+      InvoiceItemMapper invoiceItemMapper) {
     this.invoiceRepository = invoiceRepository;
     this.inventoryRepository = inventoryRepository;
+    this.invoiceItemMapper = invoiceItemMapper;
   }
 
   @Override
   public void saveInvoice(InvoiceRequest request) {
-    //TODO: Complete
+    Invoice invoice = new Invoice();
+    invoice.setItems(request.getItemsToBuy().stream()
+        .map(item -> invoiceItemMapper.invoiceItemToDTO(item))
+        .collect(Collectors.toList()));
+
+    invoiceRepository.save(invoice);
+
+    updateItemsUnits(request.getItemsToBuy());
   }
 
   @Async
