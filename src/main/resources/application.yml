@@ -1,0 +1,12 @@
+server:
+  port: 9091
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://${MONGO_USER:admintest}:${MONGO_PASS:12345}@${MONGO_HOST:127.0.0.1}:${MONGO_PORT:27017}/general_store
+
+logging:
+  level:
+    root: INFO
+    com.test: DEBUG
