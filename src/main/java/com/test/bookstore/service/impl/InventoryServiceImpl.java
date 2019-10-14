@@ -28,7 +28,7 @@ public class InventoryServiceImpl implements InventoryService {
   @Override
   public InventoryResponse getInventory(InventoryRequest request) {
 
-    Pageable pageable = PageRequest.of(request.getPage(), request.getPageSize());
+    Pageable pageable = PageRequest.of(request.getPage() - 1, request.getPageSize());
 
     Page<InventoryItem> itemsPage = inventoryRepository.findAll(pageable);
 
@@ -38,7 +38,8 @@ public class InventoryServiceImpl implements InventoryService {
             .name(item.getName())
             .description(item.getDescription())
             .price(item.getPrice())
-            .units(item.getUnits()).build())
+            .units(item.getUnits())
+            .image(item.getImage()).build())
         .collect(Collectors.toList());
 
     return new InventoryResponse(itemsList, itemsPage.getTotalElements());

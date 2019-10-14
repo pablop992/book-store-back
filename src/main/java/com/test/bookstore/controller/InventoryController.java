@@ -4,6 +4,7 @@ import com.test.bookstore.dto.request.InventoryRequest;
 import com.test.bookstore.dto.response.InventoryResponse;
 import com.test.bookstore.service.InventoryService;
 import com.test.bookstore.util.ResourceConstants;
+import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,7 +24,9 @@ public class InventoryController {
 
   @GetMapping
   public ResponseEntity<InventoryResponse> getInventory(
-      @ModelAttribute("inventoryRequest") InventoryRequest request) {
+      @ModelAttribute("inventoryRequest") @Valid InventoryRequest request) {
+
+
     return ResponseEntity.ok(inventoryService.getInventory(request));
   }
 

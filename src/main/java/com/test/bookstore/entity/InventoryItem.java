@@ -17,6 +17,7 @@ public class InventoryItem {
   private String name;
   private String description;
   private Double price;
+  private String image;
   private Long units;
 
   public static InventoryItem empty() {
