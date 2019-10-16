@@ -2,6 +2,8 @@ package com.test.bookstore.config;
 
 import java.util.Map;
 import java.util.Objects;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,6 +24,9 @@ public class CustomRemoteTokenService implements ResourceServerTokenServices {
   private final RestOperations restTemplate;
   private final AccessTokenConverter tokenConverter;
 
+  @Value("${oauth.check-token-url}")
+  private String checkTokenUrl;
+
   public CustomRemoteTokenService(RestOperations restTemplate,
       AccessTokenConverter tokenConverter) {
     this.restTemplate = restTemplate;
@@ -33,7 +38,7 @@ public class CustomRemoteTokenService implements ResourceServerTokenServices {
       throws AuthenticationException, InvalidTokenException {
     HttpHeaders headers = new HttpHeaders();
     Map<String, Object> response =
-        executeGet("http://localhost:9092/oauth/check_token?token=" + accessToken, headers);
+        executeGet(this.checkTokenUrl + accessToken, headers);
     if (Objects.isNull(response) || response.isEmpty() || response.get("error") != null) {
       throw new InvalidTokenException("Token not allowed");
     }

@@ -6,6 +6,9 @@ spring:
     mongodb:
       uri: mongodb://${MONGO_USER:admintest}:${MONGO_PASS:12345}@${MONGO_HOST:127.0.0.1}:${MONGO_PORT:27017}/general_store
 
+oauth:
+  check-token-url: http://localhost:9092/oauth/check_token?token=
+
 logging:
   level:
     root: INFO
