@@ -6,6 +6,7 @@ import com.test.bookstore.service.InventoryService;
 import com.test.bookstore.util.ResourceConstants;
 import javax.validation.Valid;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,9 +24,9 @@ public class InventoryController {
   }
 
   @GetMapping
+  @PreAuthorize("#oauth2.hasAnyScope('read')")
   public ResponseEntity<InventoryResponse> getInventory(
       @ModelAttribute("inventoryRequest") @Valid InventoryRequest request) {
-
 
     return ResponseEntity.ok(inventoryService.getInventory(request));
   }

@@ -6,6 +6,7 @@ import com.test.bookstore.service.InventoryService;
 import com.test.bookstore.service.InvoiceService;
 import com.test.bookstore.util.ResourceConstants;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ public class InvoiceController {
   }
 
   @PostMapping
+  @PreAuthorize("#oauth2.hasAnyScope('write')")
   public ResponseEntity saveInvoice(@RequestBody InvoiceRequest invoiceRequest) {
     invoiceService.saveInvoice(invoiceRequest);
     return ResponseEntity.accepted().build();
